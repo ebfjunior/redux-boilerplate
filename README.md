@@ -1,7 +1,8 @@
 # Redux Boilerplate
 
 A simple boilerplate for React+Redux applications.
-For learning about React, Redux and more, see [My Blog](http://edsonjunior.io)?
+
+For learning about React, Redux and more, see [My Blog](http://edsonjunior.io)
 
 ### Getting Started
 
