@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+import sampleReducer from './sample-feature/reducer';
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state
+  sampleReducer
 });
 
 export default rootReducer;
