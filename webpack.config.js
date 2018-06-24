@@ -1,9 +1,9 @@
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var CompressionPlugin = require("compression-webpack-plugin");
 var webpack = require("webpack");
 
 var plugins = [
-  new ExtractTextPlugin({
+  new MiniCssExtractPlugin({
       filename: 'dist/style.css',
       allChunks: true,
     })
@@ -41,6 +41,7 @@ if(process.env.NODE_ENV == 'production'){
 }
 
 module.exports = {
+  mode: "development",
   entry: [
     './src/index.js',
     './style/main.scss'
@@ -57,15 +58,18 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env'],
             plugins: [require('babel-plugin-transform-object-rest-spread')],
-            presets: ['react', 'es2015', 'stage-1']
+            presets: ['react', 'env']
           }
         }
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
   },
