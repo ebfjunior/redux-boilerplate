@@ -1,8 +1,8 @@
-var MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var CompressionPlugin = require("compression-webpack-plugin");
-var webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const webpack = require("webpack");
 
-var plugins = [
+let plugins = [
   new MiniCssExtractPlugin({
       filename: 'dist/style.css',
       allChunks: true,

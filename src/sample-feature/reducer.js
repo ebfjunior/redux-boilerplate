@@ -1,1 +1,1 @@
-export default (state= '') => 'React+Redux';
+export default () => 'React+Redux';
