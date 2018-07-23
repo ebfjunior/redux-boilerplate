@@ -1,0 +1,18 @@
+version: '3'
+services:
+  node:
+    image: node:8
+    container_name: redux-boilerplate
+    volumes:
+      - .:/var/application/current/
+    working_dir: /var/application/current/
+    networks:
+      - default-network
+    environment:
+      - PORT=3000
+    ports:
+      - 3000:3000
+    command: npm start
+networks:
+  default-network:
+    driver: bridge

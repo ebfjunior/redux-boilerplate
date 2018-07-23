@@ -1,20 +1,21 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CompressionPlugin = require("compression-webpack-plugin");
-const webpack = require("webpack");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const TransformObjectRestSpreadPlugin = require('babel-plugin-transform-object-rest-spread');
+const webpack = require('webpack');
 
 let plugins = [
   new MiniCssExtractPlugin({
-      filename: 'dist/style.css',
-      allChunks: true,
-    })
+    filename: 'dist/style.css',
+    allChunks: true,
+  }),
 ];
 
-if(process.env.NODE_ENV == 'production'){
+if (process.env.NODE_ENV === 'production') {
   plugins = [
     ...plugins,
     new webpack.DefinePlugin({
       // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-      'process.env.NODE_ENV': "'production'"
+      'process.env.NODE_ENV': 'production',
     }),
     new webpack.optimize.UglifyJsPlugin({
       mangle: true,
@@ -23,62 +24,64 @@ if(process.env.NODE_ENV == 'production'){
         pure_getters: true,
         unsafe: true,
         unsafe_comps: true,
-        screw_ie8: true
+        screw_ie8: true,
       },
       output: {
         comments: false,
       },
-      exclude: [/\.min\.js$/gi] // skip pre-minified libs
+      exclude: [/\.min\.js$/gi], // skip pre-minified libs
     }),
     new CompressionPlugin({
-      asset: "[path].gz[query]",
-      algorithm: "gzip",
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
-      minRatio: 0
-    })
-  ]
+      minRatio: 0,
+    }),
+  ];
 }
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
   entry: [
     './src/index.js',
-    './style/main.scss'
+    './style/main.scss',
   ],
   output: {
     path: __dirname,
     publicPath: '/',
-    filename: 'dist/bundle.js'
+    filename: 'dist/bundle.js',
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: [require('babel-plugin-transform-object-rest-spread')],
-            presets: ['react', 'env']
-          }
-        }
+            plugins: [TransformObjectRestSpreadPlugin],
+            presets: ['react', 'env'],
+          },
+        },
       },
       {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
+          'sass-loader',
+        ],
+      },
+    ],
   },
   plugins,
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
     historyApiFallback: true,
-    contentBase: './'
-  }
+    contentBase: './',
+    port: process.env.PORT || 8080,
+  },
 };
